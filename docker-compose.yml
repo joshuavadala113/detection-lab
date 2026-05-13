@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+
+  suricata:
+    image: jasonish/suricata:latest
+    container_name: suricata
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_NICE
+    volumes:
+      - ./suricata/suricata.yaml:/etc/suricata/suricata.yaml
+      - ./suricata/rules:/etc/suricata/rules
+      - ./suricata/logs:/var/log/suricata
+    command: -i eth0 --init-errors-fatal
+    restart: unless-stopped
+
+  zeek:
+    image: zeek/zeek:latest
+    container_name: zeek
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    volumes:
+      - ./zeek/logs:/zeek-logs
+    command: sh -c "mkdir -p /zeek-logs && zeek -i eth0 -C Log::default_logdir=/zeek-logs"
+    restart: unless-stopped
+
+  elastic-agent:
+    image: docker.elastic.co/beats/elastic-agent:8.13.0
+    container_name: elastic-agent
+    user: root
+    environment:
+      - FLEET_ENROLL=1
+      - FLEET_URL=${FLEET_URL}
+      - FLEET_ENROLLMENT_TOKEN=${ENROLLMENT_TOKEN}
+    volumes:
+      - ./suricata/logs:/var/log/suricata:ro
+      - ./zeek/logs:/var/log/zeek:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
