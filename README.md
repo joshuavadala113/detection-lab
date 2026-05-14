@@ -17,3 +17,4 @@ All detections are written in KQL and mapped to MITRE ATT&CK.
 |---|-----------|-----------|------|----------|
 | 001 | PurpleFox C2 Beacon — hex .moe URI | T1071.001 | Suricata | [link](detections/001-purplefox-c2/README.md) |
 | 002 | Qakbot C2 Check-in — numeric .dat URI | T1071.001 | Suricata | [link](detections/002-qakbot-c2/README.md) |
+| 003 | Emotet C2 POST — multipart form-data | T1071.001 | Suricata | [link](detections/003-emotet-c2/README.md) |
