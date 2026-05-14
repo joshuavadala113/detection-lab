@@ -15,4 +15,4 @@ All detections are written in KQL and mapped to MITRE ATT&CK.
 ## Detections
 | # | Technique | ATT&CK ID | Tool | Write-up |
 |---|-----------|-----------|------|----------|
-| - | Coming in Phase 2 | - | - | - |
+| 001 | PurpleFox C2 Beacon — hex .moe URI | T1071.001 | Suricata | [link](detections/001-purplefox-c2/README.md) |
