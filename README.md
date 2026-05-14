@@ -19,3 +19,4 @@ All detections are written in KQL and mapped to MITRE ATT&CK.
 | 002 | Qakbot C2 Check-in — numeric .dat URI | T1071.001 | Suricata | [link](detections/002-qakbot-c2/README.md) |
 | 003 | Emotet C2 POST — multipart form-data | T1071.001 | Suricata | [link](detections/003-emotet-c2/README.md) |
 | 004 | IcedID C2 — suspicious TLD SSL/SNI | T1071.001, T1573.002 | Zeek + KQL | [link](detections/004-icedid-c2/README.md) |
+| 005 | Cobalt Strike HTTP Beacon — short URI burst | T1071.001, T1001 | Suricata | [link](detections/005-cobalt-strike-beacon/README.md) |
