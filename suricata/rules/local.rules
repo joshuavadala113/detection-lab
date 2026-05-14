@@ -1,0 +1,1 @@
+alert http $HOME_NET any -> $EXTERNAL_NET any (msg:"PURPLEFOX C2 Beacon - Hex filename .moe URI"; flow:established,to_server; http.method; content:"GET"; http.uri; content:".moe"; fast_pattern; pcre:"/^\/[0-9A-F]{8}\.moe$/i"; classtype:trojan-activity; sid:9000001; rev:1;)
