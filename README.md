@@ -20,3 +20,6 @@ All detections are written in KQL and mapped to MITRE ATT&CK.
 | 003 | Emotet C2 POST — multipart form-data | T1071.001 | Suricata | [link](detections/003-emotet-c2/README.md) |
 | 004 | IcedID C2 — suspicious TLD SSL/SNI | T1071.001, T1573.002 | Zeek + KQL | [link](detections/004-icedid-c2/README.md) |
 | 005 | Cobalt Strike HTTP Beacon — short URI burst | T1071.001, T1001 | Suricata | [link](detections/005-cobalt-strike-beacon/README.md) |
+| 006 | PowerShell CreateRemoteThread — Process Injection | T1055 | Sysmon + KQL | [link](detections/006-powershell-process-injection/README.md) |
+| 007 | System Information Discovery — systeminfo.exe | T1082 | Elastic Defend + KQL | [link](detections/007-system-information-discovery/README.md) |
+| 008 | Registry Run Key Persistence | T1547.001 | Elastic Defend + KQL | [link](detections/008-registry-run-key-persistence/README.md) |
