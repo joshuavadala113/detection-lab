@@ -35,7 +35,7 @@ Windows 11 VM (VirtualBox)
 
 ## ATT&CK Coverage
 
-![ATT&CK Navigator Heatmap](Detection_Lab_Coverage.svg)
+![ATT&CK Navigator Heatmap](Detection_Lab_Coverage.png)
 
 ## Detections
 
@@ -70,7 +70,7 @@ detection-lab/
 ├── kibana/                     # Kibana configuration
 ├── scripts/                    # Startup and maintenance scripts
 ├── attack-navigator-layer.json
-└── Detection_Lab_Coverage.svg
+└── Detection_Lab_Coverage.png
 ```
 
 ## Goals
