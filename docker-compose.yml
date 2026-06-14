@@ -1,6 +1,45 @@
 version: "3.8"
 
 services:
+  elasticsearch:
+    image: elasticsearch:8.13.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=DetectionLab1!
+      - xpack.security.http.ssl.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s -u elastic:DetectionLab1! http://localhost:9200/_cluster/health | grep -q '\"status\":\"green\"\\|\"status\":\"yellow\"'"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+
+  kibana:
+    image: kibana:8.13.0
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=DetectionLab1!
+    volumes:
+      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - "5601:5601"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    restart: unless-stopped
 
   suricata:
     image: jasonish/suricata:latest
@@ -30,15 +69,26 @@ services:
     restart: unless-stopped
 
   elastic-agent:
-    image: docker.elastic.co/beats/elastic-agent:8.13.0
+    image: elastic/elastic-agent:8.13.0
     container_name: elastic-agent
     user: root
     environment:
-      - FLEET_ENROLL=1
-      - FLEET_URL=${FLEET_URL}
-      - FLEET_ENROLLMENT_TOKEN=${ENROLLMENT_TOKEN}
+      - FLEET_ENROLL=0
+      - ELASTICSEARCH_HOST=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=DetectionLab1!
+      - KIBANA_HOST=http://kibana:5601
+      - KIBANA_USERNAME=elastic
+      - KIBANA_PASSWORD=DetectionLab1!
     volumes:
       - ./suricata/logs:/var/log/suricata:ro
       - ./zeek/logs:/var/log/zeek:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
     restart: unless-stopped
+
+volumes:
+  esdata:
+    driver: local
