@@ -1,128 +1,90 @@
-\# Detection Lab
+# Detection Lab
 
+A self-hosted detection engineering homelab built to simulate real-world threat detection across network and endpoint telemetry. All detections are mapped to the MITRE ATT&CK framework.
 
-
-A self-hosted detection engineering homelab built to simulate real-world threat detection across network and endpoint telemetry. All detections are mapped to MITRE ATT\&CK.
-
-
-
-\## Stack
-
-
+## Stack
 
 | Component | Tool | Purpose |
-
 |-----------|------|---------|
-
 | Sensor OS | WSL2 Ubuntu 22.04 on Windows 11 | Host environment |
-
 | IDS | Suricata (Docker) | Network threat detection via EVE JSON |
-
-| NSM | Zeek (Docker) | Network metadata — conn, dns, http, ssl logs |
-
+| NSM | Zeek (Docker) | Network metadata (conn, dns, http, ssl logs) |
 | Endpoint | Sysmon + Elastic Defend | Windows process and registry telemetry |
-
 | Agent | Elastic Agent 8.13 | Log shipping via Fleet |
-
 | SIEM | Self-hosted Elasticsearch + Kibana (Docker) | Detection rule engine and alerting |
 
+## Architecture
 
-
-\## Architecture
-
-
-
-```
-
-Suricata + Zeek (Docker, network\_mode: host)
-
-&#x20;       ↓ EVE JSON + conn/dns/http/ssl logs
+```text
+Suricata + Zeek (Docker, network_mode: host)
+                ↓
+     EVE JSON + conn/dns/http/ssl logs
 
 Elastic Agent (Docker)
-
-&#x20;       ↓ Fleet-managed log shipping
+                ↓
+    Fleet-managed log shipping
 
 Elasticsearch + Kibana (Docker, self-hosted)
-
-&#x20;       ↓ KQL detection rules + alerting
+                ↓
+      KQL detection rules + alerting
 
 Windows 11 VM (VirtualBox)
-
-&#x20;       ↓ Sysmon + Elastic Defend endpoint telemetry
-
+                ↓
+ Sysmon + Elastic Defend endpoint telemetry
 ```
 
+## ATT&CK Coverage
 
+![ATT&CK Navigator Heatmap](Detection_Lab_Coverage.svg)
 
-\## ATT\&CK Coverage
+## Detections
 
-
-
-!\[ATT\&CK Navigator Heatmap](Detection\_Lab\_Coverage.svg)
-
-
-
-\## Detections
-
-
-
-| # | Technique | ATT\&CK ID | Tool | Write-up |
-
+| # | Detection | ATT&CK ID | Tool | Write-up |
 |---|-----------|-----------|------|----------|
+| 001 | PurpleFox C2 Beacon — Hex `.moe` URI | T1071.001 | Suricata | [Link](detections/001-purplefox-c2/README.md) |
+| 002 | Qakbot C2 Check-in — Numeric `.dat` URI | T1071.001 | Suricata | [Link](detections/002-qakbot-c2/README.md) |
+| 003 | Emotet C2 POST — Multipart Form Data | T1071.001 | Suricata | [Link](detections/003-emotet-c2/README.md) |
+| 004 | IcedID C2 — Suspicious TLD SSL/SNI | T1071.001, T1573.002 | Zeek + KQL | [Link](detections/004-icedid-c2/README.md) |
+| 005 | Cobalt Strike HTTP Beacon — Short URI Burst | T1071.001, T1001 | Suricata | [Link](detections/005-cobalt-strike-beacon/README.md) |
+| 006 | PowerShell CreateRemoteThread — Process Injection | T1055 | Sysmon + KQL | [Link](detections/006-powershell-process-injection/README.md) |
+| 007 | System Information Discovery — `systeminfo.exe` | T1082 | Elastic Defend + KQL | [Link](detections/007-system-information-discovery/README.md) |
+| 008 | Registry Run Key Persistence | T1547.001 | Elastic Defend + KQL | [Link](detections/008-registry-run-key-persistence/README.md) |
 
-| 001 | PurpleFox C2 Beacon — hex .moe URI | T1071.001 | Suricata | \[link](detections/001-purplefox-c2/README.md) |
+## Detection Gaps
 
-| 002 | Qakbot C2 Check-in — numeric .dat URI | T1071.001 | Suricata | \[link](detections/002-qakbot-c2/README.md) |
+| Technique | ATT&CK ID | Gap Reason | Telemetry Status |
+|------------|------------|------------|------------------|
+| OS Credential Dumping: LSASS Memory | T1003.001 | Blocked by Windows Credential Guard; no process telemetry generated | ⚠️ No signal |
 
-| 003 | Emotet C2 POST — multipart form-data | T1071.001 | Suricata | \[link](detections/003-emotet-c2/README.md) |
+## Repository Structure
 
-| 004 | IcedID C2 — suspicious TLD SSL/SNI | T1071.001, T1573.002 | Zeek + KQL | \[link](detections/004-icedid-c2/README.md) |
-
-| 005 | Cobalt Strike HTTP Beacon — short URI burst | T1071.001, T1001 | Suricata | \[link](detections/005-cobalt-strike-beacon/README.md) |
-
-| 006 | PowerShell CreateRemoteThread — Process Injection | T1055 | Sysmon + KQL | \[link](detections/006-powershell-process-injection/README.md) |
-
-| 007 | System Information Discovery — systeminfo.exe | T1082 | Elastic Defend + KQL | \[link](detections/007-system-information-discovery/README.md) |
-
-| 008 | Registry Run Key Persistence | T1547.001 | Elastic Defend + KQL | \[link](detections/008-registry-run-key-persistence/README.md) |
-
-
-
-\## Detection Gaps
-
-
-
-| Technique | ATT\&CK ID | Gap Reason | Telemetry Status |
-
-|-----------|-----------|------------|-----------------|
-
-| OS Credential Dumping: LSASS Memory | T1003.001 | Blocked by Windows Credential Guard — no process telemetry generated | ⚠️ No signal |
-
-
-
-\## Repository Structure
-
-
-
-```
-
+```text
 detection-lab/
-
-├── detections/               # Individual detection write-ups + KQL rules
-
-│   └── rules\_export.ndjson   # Exported KQL detection rules
-
-├── suricata/                 # Suricata config and custom rules
-
-├── zeek/                     # Zeek logs
-
-├── kibana/                   # Kibana config (encryption keys, settings)
-
-├── scripts/                  # Startup and maintenance scripts
-
+├── detections/                 # Individual detection write-ups
+│   ├── 001-purplefox-c2/
+│   ├── 002-qakbot-c2/
+│   ├── ...
+│   └── rules_export.ndjson     # Exported KQL detection rules
+├── suricata/                   # Suricata configuration and custom rules
+├── zeek/                       # Zeek logs and configuration
+├── kibana/                     # Kibana configuration
+├── scripts/                    # Startup and maintenance scripts
 ├── attack-navigator-layer.json
-
-└── Detection\_Lab\_Coverage.svg
-
+└── Detection_Lab_Coverage.svg
 ```
 
+## Goals
+
+- Build and validate custom detections across network and endpoint telemetry.
+- Map detections to MITRE ATT&CK techniques.
+- Develop detection engineering workflows using Elastic SIEM.
+- Document detection logic, telemetry requirements, and testing methodology.
+- Identify and track visibility gaps in the lab environment.
+
+## Future Work
+
+- Add credential access detections (T1003, T1555).
+- Expand PowerShell and LOLBin coverage.
+- Create Sigma rule equivalents for all detections.
+- Automate ATT&CK Navigator layer generation.
+- Add Atomic Red Team validation procedures.
