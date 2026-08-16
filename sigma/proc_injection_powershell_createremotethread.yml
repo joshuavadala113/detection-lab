@@ -1,0 +1,31 @@
+title: PowerShell CreateRemoteThread Process Injection
+id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+status: experimental
+description: Detects PowerShell creating a remote thread in another process, indicative
+    of process injection techniques used by tools such as Mimikatz and Cobalt Strike.
+references:
+    - https://attack.mitre.org/techniques/T1055/
+    - https://github.com/joshuavadala113/detection-lab/tree/main/detections/006-powershell-process-injection
+author: Joshua Vadala
+date: 2025/08/16
+tags:
+    - attack.defense_evasion
+    - attack.privilege_escalation
+    - attack.t1055
+logsource:
+    product: windows
+    category: create_remote_thread
+detection:
+    selection:
+        EventID: 8
+        SourceImage|endswith: '\powershell.exe'
+    condition: selection
+falsepositives:
+    - Unknown legitimate software that injects threads from PowerShell (very rare)
+level: high
+fields:
+    - SourceImage
+    - TargetImage
+    - StartAddress
+    - StartModule
+    - StartFunction
