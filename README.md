@@ -88,3 +88,9 @@ detection-lab/
 - Create Sigma rule equivalents for all detections.
 - Automate ATT&CK Navigator layer generation.
 - Add Atomic Red Team validation procedures.
+
+## SIGMA Rules
+
+| Rule | Technique | ATT&CK ID | File |
+|------|-----------|-----------|------|
+| PowerShell CreateRemoteThread Process Injection | Process Injection | T1055 | [link](sigma/proc_injection_powershell_createremotethread.yml) |
