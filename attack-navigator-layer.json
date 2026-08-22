@@ -8,12 +8,50 @@
   "domain": "enterprise-attack",
   "description": "Joshua Vadala - Detection Engineering Homelab",
   "techniques": [
-    {"techniqueID": "T1071.001", "color": "#00c000", "comment": "PurpleFox, Qakbot, Emotet, IcedID, Cobalt Strike C2 - Suricata"},
-    {"techniqueID": "T1573.002", "color": "#00c000", "comment": "IcedID SSL/SNI - Zeek + KQL"},
-    {"techniqueID": "T1001", "color": "#00c000", "comment": "Cobalt Strike HTTP beacon - Suricata"},
-    {"techniqueID": "T1055", "color": "#00c000", "comment": "PowerShell CreateRemoteThread - Sysmon + KQL"},
-    {"techniqueID": "T1082", "color": "#00c000", "comment": "systeminfo.exe - Elastic Defend + KQL"},
-    {"techniqueID": "T1547.001", "color": "#00c000", "comment": "Registry Run Key - Elastic Defend + KQL"},
-    {"techniqueID": "T1003.001", "color": "#ffff00", "comment": "LSASS dump - blocked by Credential Guard, no telemetry"}
+    {
+      "techniqueID": "T1071.001",
+      "color": "#00c000",
+      "comment": "PurpleFox, Qakbot, Emotet, IcedID, Cobalt Strike C2 - Suricata"
+    },
+    {
+      "techniqueID": "T1573.002",
+      "color": "#00c000",
+      "comment": "IcedID SSL/SNI - Zeek + KQL"
+    },
+    {
+      "techniqueID": "T1001",
+      "color": "#00c000",
+      "comment": "Cobalt Strike HTTP beacon - Suricata"
+    },
+    {
+      "techniqueID": "T1055",
+      "color": "#00c000",
+      "comment": "PowerShell CreateRemoteThread - Sysmon + KQL"
+    },
+    {
+      "techniqueID": "T1082",
+      "color": "#00c000",
+      "comment": "systeminfo.exe - Elastic Defend + KQL"
+    },
+    {
+      "techniqueID": "T1547.001",
+      "color": "#00c000",
+      "comment": "Registry Run Key - Elastic Defend + KQL"
+    },
+    {
+      "techniqueID": "T1003.001",
+      "color": "#ffff00",
+      "comment": "LSASS dump - blocked by Credential Guard, no telemetry"
+    },
+    {
+      "techniqueID": "T1059.001",
+      "color": "#00c000",
+      "comment": "PowerShell execution - Sysmon + KQL"
+    },
+    {
+      "techniqueID": "T1053.005",
+      "color": "#00c000",
+      "comment": "Scheduled Task persistence - Sysmon + KQL"
+    }
   ]
 }

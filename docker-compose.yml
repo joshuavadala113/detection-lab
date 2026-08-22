@@ -17,7 +17,7 @@ services:
     volumes:
       - esdata:/usr/share/elasticsearch/data
     ports:
-      - "9200:9200"
+      - "9201:9200"
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -s -u elastic:DetectionLab1! http://localhost:9200/_cluster/health | grep -q '\"status\":\"green\"\\|\"status\":\"yellow\"'"]

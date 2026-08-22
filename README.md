@@ -50,6 +50,9 @@ Windows 11 VM (VirtualBox)
 | 007 | System Information Discovery — `systeminfo.exe` | T1082 | Elastic Defend + KQL | [Link](detections/007-system-information-discovery/README.md) |
 | 008 | Registry Run Key Persistence | T1547.001 | Elastic Defend + KQL | [Link](detections/008-registry-run-key-persistence/README.md) |
 
+| 009 | PowerShell Execution — Mimikatz via encoded command | T1059.001 | Sysmon + KQL | [link](detections/009-powershell-execution/README.md) |
+| 010 | Scheduled Task Persistence — OnLogon/OnStartup | T1053.005 | Sysmon + KQL | [link](detections/010-scheduled-task-persistence/README.md) |
+
 ## Detection Gaps
 
 | Technique | ATT&CK ID | Gap Reason | Telemetry Status |
